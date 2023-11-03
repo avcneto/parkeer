@@ -1,0 +1,71 @@
+spring:
+  application:
+    name: parkeer
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      database: 0
+      password: ${REDIS_PASSWORD}
+
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/parkeer
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+    name: parkeer
+    generate-unique-name: true
+    pool:
+      enabled: true
+      initial-size: 5
+      max-size: 100
+      max-idle-time: 90s
+      validation-query: SELECT 1
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    user: fiap
+    schemas: parkeer
+    url: jdbc:mysql://localhost:3306/parkeer
+
+  liquibase:
+    enabled: false
+
+  security:
+    user:
+      password: ${SECURITY_PASSWORD}
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    sql:
+      init:
+        mode: always
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    deserialization:
+      fail-on-unknown-properties: false
+
+server:
+  port: 8080
+  error:
+    include-stacktrace: on_param
+    include-message: always
+    include-binding-errors: always
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          r2dbc: INFO
+
+databases:
+  redis:
+    password: ${REDIS_PASSWORD}
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}

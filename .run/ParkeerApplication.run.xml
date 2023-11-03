@@ -1,0 +1,23 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ParkeerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <envs>
+      <env name="DATASOURCE_PASSWORD" value="fiap" />
+      <env name="DATASOURCE_USERNAME" value="fiap" />
+      <env name="MYSQL_DATABASE" value="parkeer" />
+      <env name="MYSQL_PASSWORD" value="fiap" />
+      <env name="MYSQL_ROOT_PASSWORD" value="root" />
+      <env name="MYSQL_USER" value="fiap" />
+      <env name="REDIS_HOST" value="localhost" />
+      <env name="REDIS_HOST_NAME" value="redis" />
+      <env name="REDIS_PASSWORD" value="fiap" />
+      <env name="REDIS_PORT" value="6379" />
+      <env name="SECURITY_PASSWORD" value="fiap" />
+    </envs>
+    <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+    <module name="parkeer.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.parkeer.parkeer.ParkeerApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

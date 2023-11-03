@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8.0.34
+    restart: always
+    container_name: mysql-container
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: fiap
+      MYSQL_DATABASE: parkeer
+      MYSQL_USER: fiap
+      MYSQL_PASSWORD: fiap
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: '2g'
+
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis:7.2.1
+    restart: always
+    environment:
+      REDIS_PASSWORD: fiap
+    ports:
+      - "6379:6379"
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: '2g'
+

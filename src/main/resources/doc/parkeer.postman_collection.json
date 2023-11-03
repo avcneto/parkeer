@@ -1,0 +1,283 @@
+{
+	"info": {
+		"_postman_id": "9fb64321-f18e-46b7-9e9c-7e6afb623303",
+		"name": "parkeer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29499384"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Create user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Homer Simpson3\",\r\n    \"address\": \"742 Evergreen Terrace, Springfield\",\r\n    \"addressNumber\": \"Apt 2B\",\r\n    \"zipCode\": \"00000-000\",\r\n    \"phone\": \"555-443-5654\",\r\n    \"cpf\": \"123.456.789-03\",\r\n    \"email\": \"homer.simpson@dexampl3.com\",\r\n    \"password\": \"doh!\"\r\n}\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/parkeer/user",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Homer Simpson atualizado\",\r\n    \"address\": \"742 Evergreen Terrace, Springfield atualizado\",\r\n    \"addressNumber\": \"Apt 2B\",\r\n    \"zipCode\": \"00000-000\",\r\n    \"phone\": \"555-123-4567\",\r\n    \"cpf\": \"123.456.789-01\",\r\n    \"email\": \"homer.simpson@example.com\",\r\n    \"password\": \"doh!\"\r\n}\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/parkeer/user?id=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"user"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find by cpf, email or id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Homer Simpson\",\r\n    \"address\": \"742 Evergreen Terrace, Springfield\",\r\n    \"addressNumber\": \"Apt 2B\",\r\n    \"zipCode\": \"00000-000\",\r\n    \"phone\": \"555-123-4567\",\r\n    \"cpf\": \"123.456.789-01\",\r\n    \"email\": \"homer.simpson@example.com\",\r\n    \"password\": \"doh!\"\r\n}\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/parkeer/user/search?cpf=123.456.789-01",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"user",
+								"search"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "homer.simpson@example.com",
+									"disabled": true
+								},
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "cpf",
+									"value": "123.456.789-01"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/parkeer/user?id=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"user"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "park",
+			"item": [
+				{
+					"name": "park",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"plate\": \"ABC123454444444467896\",\r\n\t\"time\": \"SIXTY\",\r\n    \"status\": \"START\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/parkeer/park",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"park"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vehicle",
+			"item": [
+				{
+					"name": "add vehicle",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"plate\": \"ABC123454444444467896\",\r\n    \"branch\": \"Toyota\",\r\n    \"model\": \"Corolla\",\r\n    \"year\": 2022,\r\n    \"type\": \"CAR\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/parkeer/vehicle",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"vehicle"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get vehicle by id, userId and plate",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 123456,\r\n    \"plate\": \"ABC1234\",\r\n    \"branch\": \"Toyota\",\r\n    \"model\": \"Corolla\",\r\n    \"year\": 2022,\r\n    \"type\": \"CAR\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/parkeer/vehicle/search?plate=ABC123454444444467896",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"vehicle",
+								"search"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "123456",
+									"disabled": true
+								},
+								{
+									"key": "plate",
+									"value": "ABC123454444444467896"
+								},
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/parkeer/ping",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"parkeer",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
