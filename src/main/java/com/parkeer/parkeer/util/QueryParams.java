@@ -15,6 +15,8 @@ public record QueryParams(
 
     private static final String EMPTY_OR_BLANK = "%s and %s and %s is empty or blank";
     private static final String EMPTY_OR_BLANK_TWO = "%s and %s is empty or blank";
+    private static final String EMPTY_OR_BLANK_ONE = "%s is empty or blank";
+    private static final String STATUS_INVALID = "status param is invalid";
 
     private static final String CPF = "cpf";
     private static final String EMAIL = "email";
@@ -48,9 +50,12 @@ public record QueryParams(
     }
 
     public Status getStatus() {
+        String statusString = params.getFirst(STATUS);
+        String status = (statusString != null)? statusString: "";
+
         try {
-            return Status.valueOf(params.getFirst(STATUS));
-        } catch (IllegalArgumentException e) {
+            return Status.valueOf(status);
+        } catch (IllegalArgumentException ex) {
             return null;
         }
     }
@@ -88,10 +93,21 @@ public record QueryParams(
         }
     }
 
-    public void validatePlateAndStatus() {
-        if (isNullOrBlank(getPlate()) && isNullOrBlank(String.valueOf(getStatus()))) {
-            throw new BadRequestException(format(EMPTY_OR_BLANK_TWO, STATUS, PLATE));
-        }
+    public boolean hasPlateOrStatus() {
+        return !isNullOrBlank(getPlate()) && !isNullOrBlank(getStatusString());
+    }
+
+    public boolean hasPlate() {
+        return !isNullOrBlank(getPlate());
+    }
+
+    public boolean hasStatus() {
+        return !isNullOrBlank(getStatusString());
+    }
+
+    private String getStatusString() {
+        return getStatus() != null ? getStatus().toString() : "";
+
     }
 
     public void validateUserIdAndPlate() {
@@ -100,4 +116,9 @@ public record QueryParams(
         }
     }
 
+    public void validatePlate() {
+        if (isNullOrBlank(getPlate())) {
+            throw new BadRequestException(format(EMPTY_OR_BLANK_ONE, PLATE));
+        }
+    }
 }

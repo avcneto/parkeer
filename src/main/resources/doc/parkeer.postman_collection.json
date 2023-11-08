@@ -206,19 +206,30 @@
 					"response": []
 				},
 				{
-					"name": "get all park",
+					"name": "get park by plate or status",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/parkeer/park",
+							"raw": "localhost:8080/parkeer/park/search?plate=ABC123454444444467896&status=END",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"parkeer",
-								"park"
+								"park",
+								"search"
+							],
+							"query": [
+								{
+									"key": "plate",
+									"value": "ABC123454444444467896"
+								},
+								{
+									"key": "status",
+									"value": "END"
+								}
 							]
 						}
 					},
