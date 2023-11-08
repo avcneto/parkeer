@@ -28,7 +28,8 @@ services:
     ports:
       - "6379:6379"
     deploy:
-      resources:
+     resources:
         limits:
           cpus: '4'
           memory: '2g'
+
