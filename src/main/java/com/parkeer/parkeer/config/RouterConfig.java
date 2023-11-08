@@ -42,7 +42,7 @@ public class RouterConfig {
             final ParkHandler parkHandler,
             final PaymentMethodHandler paymentMethodHandler,
             final ReceiptHandler receiptHandler
-            ) {
+    ) {
         return nest(path(PARKEER_PATH).and(accept(APPLICATION_JSON)),
                 route(GET((PING_PATH)), userHandler::ping)
                         .andRoute(POST(USER_PATH), userHandler::createUser)
