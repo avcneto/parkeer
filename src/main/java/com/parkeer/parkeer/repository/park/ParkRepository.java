@@ -25,9 +25,9 @@ public interface ParkRepository extends R2dbcRepository<Park, Long> {
             """)
     Flux<VehicleParkDTO> findVehicleByPlateAndParkPlate(@Param("plate") final String plate);
 
-    Flux<Park> findByPlate(String plate);
+    Flux<Park> findByPlate(final String plate);
 
-    Flux<Park> findByStatus(Status status);
+    Flux<Park> findByStatus(final Status status);
 
     Flux<Park> findByPlateAndStatus(final String plate, final Status status);
 }

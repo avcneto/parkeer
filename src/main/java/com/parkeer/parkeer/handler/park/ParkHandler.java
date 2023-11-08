@@ -7,9 +7,12 @@ import com.parkeer.parkeer.service.park.ParkService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -39,15 +42,15 @@ public record ParkHandler(
                 .flatMap(ParkHandler::getServerResponseEmptyOrNot);
     }
 
-    public Mono<ServerResponse> getParkByPlate(final ServerRequest request) {
-        return parkService.getParkByPlate(request.queryParams())
+    public Mono<ServerResponse> getParkByPlateAndStatus(final ServerRequest request) {
+        return parkService.getParkByPlateAndStatus(request.queryParams())
                 .collectList()
                 .flatMap(ParkHandler::getServerResponseEmptyOrNot);
     }
 
     private static <T> Mono<ServerResponse> getServerResponseEmptyOrNot(List<T> parks) {
         if (parks.isEmpty()) {
-            return ServerResponse.notFound().build();
+            return ServerResponse.ok().bodyValue(Collections.emptyList());
         }
 
         return ServerResponse.ok().bodyValue(parks);

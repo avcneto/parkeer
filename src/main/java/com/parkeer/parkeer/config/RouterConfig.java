@@ -55,12 +55,12 @@ public class RouterConfig {
                         .andRoute(PATCH(VEHICLE_PATH), vehicleHandler::updateVehicleById)
                         .andRoute(POST(PARK_PATH), parkHandler::park)
                         .andRoute(POST(UNPARK), parkHandler::unPark)
+                        .andRoute(GET(PARK_SEARCH_PATH), parkHandler::getParkByPlateAndStatus)
                         .andRoute(POST(PAYMENT_METHOD), paymentMethodHandler::addPaymentMethod)
                         .andRoute(DELETE(PAYMENT_METHOD), paymentMethodHandler::deletePaymentMethodById)
                         .andRoute(PATCH(PAYMENT_METHOD), paymentMethodHandler::updateByPaymentMethodId)
                         .andRoute(GET(PAYMENT_METHOD), paymentMethodHandler::getAllPaymentMethodOrById)
                         .andRoute(GET(RECEIPT), receiptHandler::getReceiptByUserIdOrPlate)
-                        .andRoute(GET(PARK_SEARCH_PATH), parkHandler::getParkByPlate)
         );
     }
 }
