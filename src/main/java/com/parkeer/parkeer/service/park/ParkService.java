@@ -1,36 +1,42 @@
 package com.parkeer.parkeer.service.park;
 
 import com.parkeer.parkeer.dto.park.ParkDTO;
+import com.parkeer.parkeer.dto.park.UnparkDTO;
 import com.parkeer.parkeer.entity.park.Park;
 import com.parkeer.parkeer.entity.park.ParkRedis;
 import com.parkeer.parkeer.entity.park.Status;
 import com.parkeer.parkeer.entity.park.Time;
 import com.parkeer.parkeer.exception.BadRequestException;
+import com.parkeer.parkeer.exception.NotFoundException;
 import com.parkeer.parkeer.repository.park.ParkRedisRepositoryImpl;
 import com.parkeer.parkeer.repository.park.ParkRepository;
+import com.parkeer.parkeer.repository.payment_method.PaymentMethodRepository;
+import com.parkeer.parkeer.util.QueryParams;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
-@EnableScheduling
 public class ParkService {
 
-    private static final String REDIS_SYNCHRONIZATION_EMPTY_MESSAGE = "redis empty, synchronization not performed.";
-    private static final String SUCCESSFUL_SYNCHRONIZATION = "successful synchronization";
     private static final String VEHICLE_IS_PARKED = "vehicle is parked, please unpark the vehicle and try again";
     private static final String VEHICLE_UNREGISTERED = "unregistered vehicle";
-    private static final long TIME = 50000;
+    private static final String VEHICLE_IS_NOT_PARKED = "vehicle is not parked";
+    private static final String UNREGISTERED_PAYMENT_METHOD = "unregistered payment method";
+    private static final Integer ZERO = 0;
+    private static final Integer ONE = 1;
+
+    private final PaymentMethodRepository paymentMethodRepository;
     private final ParkRedisRepositoryImpl parkRedisRepository;
     private final ParkRepository parkRepository;
 
-    public ParkService(ParkRedisRepositoryImpl parkRedisRepository, ParkRepository parkRepository) {
+    public ParkService(PaymentMethodRepository paymentMethodRepository, ParkRedisRepositoryImpl parkRedisRepository, ParkRepository parkRepository) {
+        this.paymentMethodRepository = paymentMethodRepository;
         this.parkRedisRepository = parkRedisRepository;
         this.parkRepository = parkRepository;
     }
@@ -41,7 +47,9 @@ public class ParkService {
                     if (Status.START.equals(park.getStatus())) {
                         return Mono.error(new BadRequestException(VEHICLE_IS_PARKED));
                     } else {
-                        return saveParkRedis(parkDTO);
+                        return paymentMethodRepository.findByUserId(park.getUserId())
+                                .flatMap(paymentMethod -> saveParkRedis(parkDTO, park.getVersion()))
+                                .switchIfEmpty(Mono.error(new BadRequestException(UNREGISTERED_PAYMENT_METHOD)));
                     }
                 })
                 .switchIfEmpty(
@@ -61,19 +69,22 @@ public class ParkService {
                                         return Mono.error(new BadRequestException(VEHICLE_UNREGISTERED));
                                     }
 
-                                    return saveParkRedis(parkDTO);
+                                    return paymentMethodRepository.findByUserId(parkDTO.userId())
+                                            .flatMap(paymentMethod -> saveParkRedis(parkDTO, ZERO))
+                                            .switchIfEmpty(Mono.error(new BadRequestException(UNREGISTERED_PAYMENT_METHOD)));
                                 })
                 )
                 .onErrorResume(BadRequestException.class, Mono::error);
     }
 
-    private Mono<ParkRedis> saveParkRedis(ParkDTO parkDTO) {
-        var now = ZonedDateTime.now();
+    private Mono<ParkRedis> saveParkRedis(ParkDTO parkDTO, int version) {
+        var now = LocalDateTime.now();
         var parkRedis = new ParkRedis(
                 parkDTO.plate(),
-                0,
+                parkDTO.userId(),
+                version,
                 parkDTO.time(),
-                parkDTO.status(),
+                Status.START,
                 now.toString(),
                 getLastUpdate(parkDTO.time(), now).toString()
         );
@@ -81,8 +92,9 @@ public class ParkService {
         return this.parkRedisRepository.save(parkRedis);
     }
 
-    private ZonedDateTime getLastUpdate(Time time, ZonedDateTime now) {
+    private LocalDateTime getLastUpdate(Time time, LocalDateTime now) {
         return switch (time) {
+            case FIFTY_SECOND -> now.plusSeconds(50);
             case FIFTEEN -> now.plusMinutes(15);
             case THIRTY -> now.plusMinutes(30);
             case SIXTY -> now.plusHours(1);
@@ -90,25 +102,47 @@ public class ParkService {
         };
     }
 
-    @Scheduled(fixedDelay = TIME)
-    public void synchronizeDatabase() {
-        parkRedisRepository.findAll()
-                .collectList()
-                .flatMapMany(allRedisPark -> {
+    public Flux<ParkRedis> unPark(final UnparkDTO unparkDTO) {
+        return Flux.just(unparkDTO)
+                .flatMap(unpark -> parkRedisRepository.findByPlate(unpark.plate())
+                        .flatMap(it -> {
+                            if (Status.END.equals(it.getStatus())) {
+                                return Mono.error(new NotFoundException(VEHICLE_IS_NOT_PARKED));
+                            } else {
+                                it.setStatus(Status.END);
+                                it.setVersion(it.getVersion() + ONE);
 
-                    if (allRedisPark.isEmpty()) {
-                        log.info(REDIS_SYNCHRONIZATION_EMPTY_MESSAGE);
+                                return parkRepository.save(new Park(it))
+                                        .flatMap(savedPark -> parkRedisRepository
+                                                .delete(savedPark.getPlate())
+                                                .thenReturn(savedPark))
+                                        .map(ParkRedis::new);
+                            }
+                        })
+                        .flux()
+                        .switchIfEmpty(
+                                parkRepository.findByPlateAndStatus(unparkDTO.plate(), Status.START)
+                                        .flatMap(it2 -> {
 
-                        return Mono.empty();
-                    } else {
-                        var saveAll = allRedisPark.stream().map(Park::new).toList();
-                        var deleteAll = Flux.fromIterable(allRedisPark.stream().map(ParkRedis::getPlate).toList());
+                                            it2.setVersion(it2.getVersion() + ONE);
+                                            it2.setStatus(Status.END);
 
-                        return parkRepository.saveAll(saveAll)
-                                .thenMany(parkRedisRepository.deleteAll(deleteAll))
-                                .doOnNext(it -> log.info(SUCCESSFUL_SYNCHRONIZATION))
-                                .thenMany(Mono.empty());
-                    }
-                }).subscribe();
+                                            return parkRepository.save(it2);
+                                        })
+                                        .map(ParkRedis::new)
+                        )
+                        .switchIfEmpty(Mono.error(new NotFoundException(VEHICLE_IS_NOT_PARKED)))
+                        .onErrorResume(NotFoundException.class, Mono::error)
+                );
+    }
+
+    public Flux<Park> getParkByPlate(final MultiValueMap<String, String> params) {
+        return Flux.zip(Mono.just(new QueryParams(params)), Mono.empty())
+                .flatMap(tuple -> {
+                    var query = tuple.getT1();
+                    query.validatePlateAndStatus();
+
+                    return parkRepository.findByPlate(query.getPlate());
+                });
     }
 }

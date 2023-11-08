@@ -44,12 +44,16 @@ dependencies {
     testImplementation("io.projectreactor:reactor-test")
     implementation("org.flywaydb:flyway-mysql:9.22.3")
     implementation("org.springframework.security:spring-security-crypto:6.1.5")
+    implementation("org.hibernate:hibernate-core:6.4.0.CR1")
+    implementation("org.hibernate:hibernate-java8:5.0.3.Final")
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+// Trecho de codigo para fazer teste de carga e não utrapassar o limite do recurso estipulado.
+/*
 tasks.withType<JavaExec> {
     jvmArgs = listOf("-Xmx2g") // Define 2 GB como limite de memória
 }
@@ -58,3 +62,4 @@ tasks.withType<JavaExec> {
     // Configura o número máximo de threads do pool de threads
     systemProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "4")
 }
+*/
