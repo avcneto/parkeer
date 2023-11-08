@@ -89,7 +89,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/parkeer/user/search?cpf=123.456.789-01",
+							"raw": "localhost:8080/parkeer/user/search?id=1",
 							"host": [
 								"localhost"
 							],
@@ -107,12 +107,12 @@
 								},
 								{
 									"key": "id",
-									"value": "1",
-									"disabled": true
+									"value": "1"
 								},
 								{
 									"key": "cpf",
-									"value": "123.456.789-01"
+									"value": "123.456.789-01",
+									"disabled": true
 								}
 							]
 						}
@@ -156,13 +156,60 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"plate\": \"ABC123454444444467896\",\r\n\t\"time\": \"SIXTY\",\r\n    \"status\": \"START\"\r\n}",
+							"raw": "{\r\n    \"userId\": 1,\r\n\t\"plate\": \"ABC123454444444467896\",\r\n\t\"time\": \"FIFTY_SECOND\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
+						"url": {
+							"raw": "localhost:8080/parkeer/park",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"park"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unpark",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"plate\": \"ABC123454444444467896\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/parkeer/unpark",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"unpark"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all park",
+					"request": {
+						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "localhost:8080/parkeer/park",
 							"host": [
@@ -211,6 +258,40 @@
 					"response": []
 				},
 				{
+					"name": "update vehicle by id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"plate\": \"ABC123454444444467896\",\r\n    \"branch\": \"Hyundai\",\r\n    \"model\": \"HB20\",\r\n    \"year\": 2019,\r\n    \"type\": \"CAR\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/parkeer/vehicle?id=2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"vehicle"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "get vehicle by id, userId and plate",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -228,7 +309,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/parkeer/vehicle/search?plate=ABC123454444444467896",
+							"raw": "localhost:8080/parkeer/vehicle/search?userId=1",
 							"host": [
 								"localhost"
 							],
@@ -241,16 +322,197 @@
 							"query": [
 								{
 									"key": "userId",
-									"value": "123456",
-									"disabled": true
+									"value": "1"
 								},
 								{
 									"key": "plate",
-									"value": "ABC123454444444467896"
+									"value": "ABC123454444444467896",
+									"disabled": true
 								},
 								{
 									"key": "id",
-									"value": "1",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete vehicle by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/parkeer/vehicle?id=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"vehicle"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "payment method",
+			"item": [
+				{
+					"name": "create payment method",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n         \"userId\": 1,\r\n         \"paymentMethodType\": \"PIX\",\r\n         \"pixKey\": \"1234\",\r\n         \"cardNumber\": \"1234****5678\",\r\n         \"cardFlag\": \"mastercard\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/parkeer/payment/method",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"payment",
+								"method"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update payment method",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n         \"userId\": 1,\r\n         \"paymentMethodType\": \"CREDIT_CARD\",\r\n         \"pixKey\": \"1234\",\r\n         \"cardNumber\": \"1234****5678\",\r\n         \"cardFlag\": \"mastercard\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/parkeer/payment/method?id=3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"payment",
+								"method"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete payment method by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/parkeer/payment/method?id=2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"payment",
+								"method"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get payment method by id or all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/parkeer/payment/method?id=3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"payment",
+								"method"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "receipt",
+			"item": [
+				{
+					"name": "get receipt by userId or plate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/parkeer/receipt?userId=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"receipt"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1"
+								},
+								{
+									"key": "plate",
+									"value": "ABC123454444444467896",
 									"disabled": true
 								}
 							]

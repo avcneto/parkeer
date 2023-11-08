@@ -2,7 +2,6 @@ package com.parkeer.parkeer.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.parkeer.parkeer.dto.user.UserDTO;
-import com.parkeer.parkeer.entity.vehicle.Vehicle;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,13 +11,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import javax.persistence.GeneratedValue;
-import javax.persistence.Transient;
-
-import java.util.Collections;
-import java.util.List;
 
 import static com.parkeer.parkeer.config.SecurityConfig.passwordEncoder;
-import static java.util.Collections.emptyList;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
