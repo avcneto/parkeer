@@ -53,7 +53,6 @@ tasks.withType<Test> {
 }
 
 // Trecho de codigo para fazer teste de carga e não utrapassar o limite do recurso estipulado.
-/*
 tasks.withType<JavaExec> {
     jvmArgs = listOf("-Xmx2g") // Define 2 GB como limite de memória
 }
@@ -62,4 +61,3 @@ tasks.withType<JavaExec> {
     // Configura o número máximo de threads do pool de threads
     systemProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "4")
 }
-*/

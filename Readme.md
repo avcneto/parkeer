@@ -1,12 +1,12 @@
-![](https://i.imgur.com/RmNZJQk.png)  
+![](https://i.imgur.com/TEiYgBt.png)  
 ![Licença](https://img.shields.io/badge/license-MIT-green)
 ![Badge em Desenvolvimento](https://img.shields.io/badge/release%20date-november/08-yellow)
 ![Gradle Version](https://img.shields.io/badge/gradle-x.x.x-blue)
 ![Java Version](https://img.shields.io/badge/java-17-blue)
 
-# <h1 align="center">Parkar</h1>
+# <h1 align="center">Parkeer</h1>
 
-Apresentamos o **Parkar**, uma poderosa ferramenta que revolucionará a forma como você gerencia os parquímetros em 
+Apresentamos o **Parkeer**, uma poderosa ferramenta que revolucionará a forma como você gerencia os parquímetros em 
 grandes centros urbanos. Com nosso sistema em sua mão, você poderá gerenciar o tempo de estacionamento dos veículos,
 calcular os valores devido ao uso dos parquímetros e ainda utilizar tais informações para fins de fiscalização.
 Nossa solução permite realizar todas estas funções sem atrasos e transtornos, garantindo a eficiência na execução e
