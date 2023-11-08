@@ -1,6 +1,8 @@
 package com.parkeer.parkeer.config;
 
 import com.parkeer.parkeer.handler.park.ParkHandler;
+import com.parkeer.parkeer.handler.payment_method.PaymentMethodHandler;
+import com.parkeer.parkeer.handler.receipty.ReceiptHandler;
 import com.parkeer.parkeer.handler.user.UserHandler;
 import com.parkeer.parkeer.handler.vehicle.VehicleHandler;
 import org.springframework.context.annotation.Bean;
@@ -28,12 +30,18 @@ public class RouterConfig {
     private static final String VEHICLE_PATH = "/vehicle";
     private static final String VEHICLE_SEARCH_PATH = "/vehicle/search";
     private static final String PARK_PATH = "/park";
+    private static final String PARK_SEARCH_PATH = "/park/search";
+    private static final String UNPARK = "/unpark";
+    private static final String PAYMENT_METHOD = "/payment/method";
+    private static final String RECEIPT = "/receipt";
 
     @Bean
     public RouterFunction<ServerResponse> routes(
             final UserHandler userHandler,
             final VehicleHandler vehicleHandler,
-            final ParkHandler parkHandler
+            final ParkHandler parkHandler,
+            final PaymentMethodHandler paymentMethodHandler,
+            final ReceiptHandler receiptHandler
     ) {
         return nest(path(PARKEER_PATH).and(accept(APPLICATION_JSON)),
                 route(GET((PING_PATH)), userHandler::ping)
@@ -43,7 +51,16 @@ public class RouterConfig {
                         .andRoute(GET(USER_SEARCH_PATH), userHandler::getUserByCpfOrEmailOrId)
                         .andRoute(POST(VEHICLE_PATH), vehicleHandler::addVehicle)
                         .andRoute(GET(VEHICLE_SEARCH_PATH), vehicleHandler::getVehicleByIdOrUserIdOrPlate)
+                        .andRoute(DELETE(VEHICLE_PATH), vehicleHandler::deleteByVehicleId)
+                        .andRoute(PATCH(VEHICLE_PATH), vehicleHandler::updateVehicleById)
                         .andRoute(POST(PARK_PATH), parkHandler::park)
+                        .andRoute(POST(UNPARK), parkHandler::unPark)
+                        .andRoute(POST(PAYMENT_METHOD), paymentMethodHandler::addPaymentMethod)
+                        .andRoute(DELETE(PAYMENT_METHOD), paymentMethodHandler::deletePaymentMethodById)
+                        .andRoute(PATCH(PAYMENT_METHOD), paymentMethodHandler::updateByPaymentMethodId)
+                        .andRoute(GET(PAYMENT_METHOD), paymentMethodHandler::getAllPaymentMethodOrById)
+                        .andRoute(GET(RECEIPT), receiptHandler::getReceiptByUserIdOrPlate)
+                        .andRoute(GET(PARK_SEARCH_PATH), parkHandler::getParkByPlate)
         );
     }
 }

@@ -1,5 +1,6 @@
 package com.parkeer.parkeer.util;
 
+import com.parkeer.parkeer.entity.park.Status;
 import com.parkeer.parkeer.exception.BadRequestException;
 import org.springframework.util.MultiValueMap;
 
@@ -13,6 +14,8 @@ public record QueryParams(
 ) {
 
     private static final String EMPTY_OR_BLANK = "%s and %s and %s is empty or blank";
+    private static final String EMPTY_OR_BLANK_TWO = "%s and %s is empty or blank";
+
     private static final String CPF = "cpf";
     private static final String EMAIL = "email";
     private static final String ID = "id";
@@ -20,6 +23,7 @@ public record QueryParams(
     private static final String PLATE = "plate";
     private static final String INVALID_ID = "invalid id";
     private static final String ID_IS_NOT_A_NUMBER = "id is not a number";
+    private static final String STATUS = "status";
 
     public String getCpf() {
         return params.getFirst(CPF);
@@ -41,6 +45,14 @@ public record QueryParams(
 
     public String getPlate() {
         return params.getFirst(PLATE);
+    }
+
+    public Status getStatus() {
+        try {
+            return Status.valueOf(params.getFirst(STATUS));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     public Long getIdOrNull() {
@@ -73,6 +85,18 @@ public record QueryParams(
     public void validateIdAndCpfAndEmail() {
         if (getIdOrNull() == null && isNullOrBlank(getCpf()) && isNullOrBlank(getEmail())) {
             throw new BadRequestException(format(EMPTY_OR_BLANK, CPF, EMAIL, ID));
+        }
+    }
+
+    public void validatePlateAndStatus() {
+        if (isNullOrBlank(getPlate()) && isNullOrBlank(String.valueOf(getStatus()))) {
+            throw new BadRequestException(format(EMPTY_OR_BLANK_TWO, STATUS, PLATE));
+        }
+    }
+
+    public void validateUserIdAndPlate() {
+        if (getUserId() == null && isNullOrBlank(getPlate())) {
+            throw new BadRequestException(format(EMPTY_OR_BLANK_TWO, USER_ID, PLATE));
         }
     }
 

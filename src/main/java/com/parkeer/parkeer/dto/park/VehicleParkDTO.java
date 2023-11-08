@@ -6,6 +6,7 @@ public record VehicleParkDTO(
         Long userId,
         String plate,
         String parkId,
-        Status parkStatus
+        Status parkStatus,
+        Integer parkVersion
 ) {
 }

@@ -34,7 +34,7 @@ public class ParkRedisRepositoryImpl implements ParkRedisRepository {
 
     @Override
     public Mono<ParkRedis> findByPlate(String plate) {
-       return hashOperations.get(KEY, plate);
+        return hashOperations.get(KEY, plate);
     }
 
     @Override
@@ -53,8 +53,20 @@ public class ParkRedisRepositoryImpl implements ParkRedisRepository {
     }
 
     @Override
+    public Flux<ParkRedis> findByStatus(Status status) {
+        return hashOperations.values(KEY)
+                .filter(it -> Status.START.equals(it.getStatus()));
+    }
+
+    @Override
     public Mono<Boolean> existsByPlate(String plate) {
         return findByPlate(plate).hasElement();
+    }
+
+    @Override
+    public Flux<ParkRedis> findByPlateAndStatus(String plate, Status status) {
+        return hashOperations.values(KEY)
+                .filter(it -> it.getPlate().equals(plate) && it.getStatus().equals(status));
     }
 
     @Override

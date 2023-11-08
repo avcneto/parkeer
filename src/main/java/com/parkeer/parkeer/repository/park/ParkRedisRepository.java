@@ -19,4 +19,8 @@ public interface ParkRedisRepository {
 
     Flux<Long> deleteAll(Flux<String> keys);
 
+    Flux<ParkRedis> findByStatus(Status status);
+
+    Flux<ParkRedis> findByPlateAndStatus(String plate, Status status);
+
 }
