@@ -28,6 +28,7 @@ public class ParkService {
     private static final String VEHICLE_UNREGISTERED = "unregistered vehicle";
     private static final String VEHICLE_IS_NOT_PARKED = "vehicle is not parked";
     private static final String UNREGISTERED_PAYMENT_METHOD = "unregistered payment method";
+    private static final String NOT_SEND_QUERY_PARAM = "plate or status not sent as query param";
     private static final Integer ZERO = 0;
     private static final Integer ONE = 1;
 
@@ -136,13 +137,35 @@ public class ParkService {
                 );
     }
 
-    public Flux<Park> getParkByPlate(final MultiValueMap<String, String> params) {
-        return Flux.zip(Mono.just(new QueryParams(params)), Mono.empty())
-                .flatMap(tuple -> {
-                    var query = tuple.getT1();
-                    query.validatePlateAndStatus();
+    public Flux<ParkRedis> getParkByPlateAndStatus(final MultiValueMap<String, String> params) {
+        return Flux
+                .just(params)
+                .flatMap(it -> {
+                    var query = new QueryParams(it);
 
-                    return parkRepository.findByPlate(query.getPlate());
+                    if (query.hasPlateOrStatus()) {
+                        var parkRedis = parkRedisRepository.findByPlateAndStatus(query.getPlate(), query.getStatus());
+                        var parkMysql = parkRepository.findByPlateAndStatus(query.getPlate(), query.getStatus()).map(ParkRedis::new);
+
+                        return parkRedis.concatWith(parkMysql);
+                    }
+
+                    if (query.hasPlate()) {
+                        var parkRedis = parkRedisRepository.findByPlate(query.getPlate());
+                        var parkMysql = parkRepository.findByPlate(query.getPlate()).map(ParkRedis::new);
+
+                        return parkRedis.concatWith(parkMysql);
+
+                    }
+
+                    if (query.hasStatus()) {
+                        var parkRedis = parkRedisRepository.findByStatus(query.getStatus());
+                        var parkMysql = parkRepository.findByStatus(query.getStatus()).map(ParkRedis::new);
+
+                        return parkRedis.concatWith(parkMysql);
+                    }
+
+                    return Mono.error(new BadRequestException(NOT_SEND_QUERY_PARAM));
                 });
     }
 }
