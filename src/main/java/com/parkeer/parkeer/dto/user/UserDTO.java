@@ -1,6 +1,8 @@
 package com.parkeer.parkeer.dto.user;
 
+
 import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 public record UserDTO(
         @Pattern(regexp = NO_NUMERIC_REGEX, message = NAME_NON_NUMERIC_MESSAGE)
@@ -18,9 +20,8 @@ public record UserDTO(
         @Pattern(regexp = PHONE_NUMBER_REGEX)
         String phone,
         @NotBlank(message = FIELD_CANNOT_BE_NULL_EMPTY_BLANK_MESSAGE)
-        @Pattern(regexp = NUMBER_REGEX, message = FIELD_ONLY_NUMBER_MESSAGE)
         @PositiveOrZero(message = FIELD_ONLY_NUMBER_MESSAGE)
-        //@CPF(message = CPF_INVALID_MESSAGE) - IMPLEMENTAR HIBERNATE
+        @CPF(message = FIELD_ONLY_NUMBER_MESSAGE)
         String cpf,
         @Email(message = EMAIL_MESSAGE)
         @NotBlank(message = FIELD_CANNOT_BE_NULL_EMPTY_BLANK_MESSAGE)
@@ -37,7 +38,6 @@ public record UserDTO(
     private static final String ZIP_CODE_REGEX = "\\d{5}(-\\d{3})?";
     private static final String ZIP_CODE_INVALID_MESSAGE = "Zipcode is invalid, example: 00000-000";
     private static final String PHONE_NUMBER_REGEX = "(^$|[0-9]{10})";
-    private static final String NUMBER_REGEX = "^[0-9]*$";
     private static final String EMAIL_MESSAGE = "Email is invalid, Please use a valid email";
     private static final int PASSWORD_MIN_SIZE = 6;
     private static final String PASSWORD_SIZE_MESSAGE = "The password must be in the minimum 6 characters";

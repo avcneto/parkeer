@@ -31,6 +31,7 @@ public class SchedulingConfig {
     private static final String SUCCESSFUL_OPERATION_FOR_PARK_REDIS = "successful operation for ParkRedis";
     private static final String SUCCESSFUL_OPERATION_FOR_PARK = "successful operation for Park";
     private static final String ERROR_DURING_SYNCHRONIZATION = "error during synchronization: %s";
+    private static final String TOPIC_MESSAGE = "TOPIC_PUBLISH: %s";
     private static final Integer ONE = 1;
     private static final BigDecimal PRICE_POR_MINUTE_PARKED = new BigDecimal("0.16");
     private static final long SYNCHRONIZATION_DATABASE_TIME = 50000;
@@ -79,6 +80,9 @@ public class SchedulingConfig {
                                                     PRICE_POR_MINUTE_PARKED,
                                                     getPriceTotalByMinute(duration)
                                             );
+
+                                            producerMessageConsole(receipt);
+
                                             return receiptRepository.save(receipt);
                                         })
                                         .thenReturn(savedPark))
@@ -90,6 +94,10 @@ public class SchedulingConfig {
                 })
                 .doOnTerminate(() -> log.info(SUCCESSFUL_OPERATION_FOR_PARK_REDIS))
                 .subscribe();
+    }
+
+    private <T> void producerMessageConsole(T message) {
+        log.info(format(TOPIC_MESSAGE, message));
     }
 
     private BigDecimal getPriceTotalByMinute(Integer duration) {
@@ -120,6 +128,9 @@ public class SchedulingConfig {
                                             PRICE_POR_MINUTE_PARKED,
                                             getPriceTotalByMinute(duration)
                                     );
+
+                                    producerMessageConsole(receipt);
+
                                     return receiptRepository.save(receipt);
                                 });
                     }
