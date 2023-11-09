@@ -44,23 +44,11 @@ proporcionando aos usuários informações precisas, seguras e de rápida respon
 
 ## Funcionalidades
 
-Os endpoints e os dados necessários para consumo da API construída estão disponíveis no [tópico](#documentação-técnica)
-abaixo.
+Cadastro e consulta de usuários  
+Cadastro e consulta de veículos  
+Cadastro e consulta de métodos de pagamentos
 
-Cadastro de usuários bem como seus dependentes:
-
-* Os cadastro serão únicos, validados através do CPF e/ou e-mail utilizado durante o cadastro;
-* Cada usuário poderá cadastrar seus endereços, usuários dependentes (parentesco) e respectivos equipamentos eletrodomésticos
-
-Cadastro de Endereços
-
-* O cadastro de endereço será realizado mediante interface, com a API [ViaCep](https://viacep.com.br), uma vez informado
-  o CEP pelo usuário.
-* Casos em que a API esteja indisponível ainda será possível que o usuário faça o cadastro manualmente.
-
-Cadastro de Eletrodomésticos
-
-* Cada usuário poderá cadastrar seus respectivos eletrodomésticos por endereço cadastrado
+Validação de usuários por e-mail e CPF.
 
 ## Acesso ao projeto
 
@@ -72,35 +60,40 @@ ou [baixá-lo](https://github.com/avcneto/postech-parkeer/archive/refs/heads/mai
 Após baixar o projeto, você pode abrir com a IDE de preferência e configurar as variáveis de ambiente para acessar o
 banco de dados.
 
-
-1. Fazer o [download](https://github.com/Luzeraaa/postech/archive/refs/heads/main.zip);
+1. Fazer o [download](https://github.com/avcneto/postech-parkeer/archive/refs/heads/main.zip);
 2. Instalar Docker Desktop (Caso esteja em ambiente Windowns instalar WSL);
 2. Abrir com IDE de preferência;
 3. Executar via terminal:
     *  `docker-compose up`
-    * Certifique-se de executar dentro do diretório do projeto "watchwatt" onde esta localizado o arquivo docker compose.
+    * Certifique-se de executar dentro do diretório do projeto "postech-parkeer" onde esta localizado o arquivo docker compose.
 4. Configurar as varíaveis de ambiente para acessar o banco de dados:
-    * _DATASOURCE_PASSWORD=fiap_
-    * _DATASOURCE_USER=fiap_
-    * _SECURITY_USER=fiap_
-    * _SECURITY_PASSWORD=fiap_
-    * _SECURITY_ROLE=ADMIN_
-    * _JTW_TOKEN_KEY=watchwatt4d1381e44ae829040b6568e9e2b2cfa72c2f95946a04a760key_
-    * _JWT_TOKEN_EXPIRATION=3600000_
+    * _DATASOURCE_PASSWORD=fiap
+    * DATASOURCE_USERNAME=fiap
+    * MYSQL_DATABASE=parkeer
+    * MYSQL_PASSWORD=fiap
+    * MYSQL_ROOT_PASSWORD=root
+    * MYSQL_USER=fiap
+    * REDIS_HOST=localhost
+    * REDIS_HOST_NAME=redis
+    * REDIS_PASSWORD=fiap
+    * REDIS_PORT=6379
+    * SECURITY_PASSWORD=fiap
 5. Executar o projeto.
-6. Os métodos devem ser executados na seguinte ordem:
-   * Criação do usuário;
-   * Login para resgate do JWT Token; 
-   * Criação do endereço relacionado ao usuário;
-   * Criação do eletrodoméstico relacionado ao endereço;
+6. Os possíveis métodos podem ser executados:
+   * Cadastro do usuário; 
+   * Cadastro da forma de pagamento;
+   * Cadastro do Veículo;
+   * Estacionar o Veículo (início da contagem do tempo)
+   * Retirar o Veículo da Vaga (manual)
+   * Retirar o Veículo da Vaga (time out)
 
 
 ## Acesso ao Banco de Dados
 
-A persistência de dados será realizado através do banco de dados PostgresSQL. Este banco irá rodar em container via Dokcer.
+A persistência de dados será realizado através do banco de dados MySQL e REDIS. Ambos os banco irão rodar em container via Dokcer.
 Maiores detalhes de versão da imagem e configurações de portas verificar arquivo:
 
-* [docker-compose.yml](watchwatt/docker-compose.yml)
+* [docker-compose.yml](https://github.com/avcneto/postech-parkeer/blob/main/docker-compose.yml)
 
 ## Tecnologias utilizadas
 
@@ -114,9 +107,6 @@ Maiores detalhes de versão da imagem e configurações de portas verificar arqu
 - JPA (Java Persistence API) (Especificação padrão para persistência de dados em Java)
 - Lombok (Biblioteca para reduzir a verbosidade do código e automatizar tarefas comuns)
 - Jakarta Bean Validation (Especificação para validação de dados em Java)
-- JWT (Json Web token)
-- Auth0
-- Swagger & OpenAPI (Ferramentas e especificações para projetar, criar e documentar APIs RESTful)
 - Docker
 
 
@@ -137,6 +127,8 @@ Maiores detalhes de versão da imagem e configurações de portas verificar arqu
 />
 <img src=https://www.mundodocker.com.br/wp-content/uploads/2015/06/docker_facebook_share.png width="60" height="55" width="60" height="55"
 />
+<img src=https://oopy.lazyrockets.com/api/v2/notion/image?src=https:%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F3ed7a304-a24b-4c45-831f-1755950e4260%2Flombok.png&blockId=552b6017-489d-4bcd-bb44-803f5e94bac9&width=256   width="60" height="55"
+/>
 </div>
 
 ## Relatório Técnico
@@ -147,19 +139,14 @@ Essa combinação permite obter os benefícios de ambos os conceitos, utilizando
 responsabilidades de apresentação e controle de fluxo, e o DDD para criar um modelo de domínio encapsulado e rico.
 
 A versão 17 do Java foi escolhida como base para o projeto devido à sua estabilidade e atualização no momento do
-desenvolvimento. Para facilitar a configuração e o gerenciamento de dependências, o projeto adotou o Maven, que possui
-uma estrutura simples e ampla biblioteca de plugins. Além disso, o Maven possui uma vasta integração com repositórios
+desenvolvimento. Para facilitar a configuração e o gerenciamento de dependências, o projeto adotou o Gradle, que possui
+uma estrutura simples e ampla biblioteca de plugins. Além disso, o Gradle possui uma vasta integração com repositórios
 centrais e uma
 documentação extensa, tornando-o uma escolha popular e confiável para a construção e gerenciamento de projetos Java.
 
 Para de reduzir a verbosidade e os famosos códigos boilerplates do código, além de automatizar a geração de getters,
 setters, construtores e outros métodos comuns, o projeto utilizou o Lombok, uma biblioteca para Java. O Lombok também
 fornece a anotação Slf4j para logar erros internos da aplicação, mantendo-os ocultos do usuário final.
-
-O Spring Security foi escolhido como framework de autenticação e autorização para a aplicação Java, fornecendo recursos
-de segurança contra ameaças cibernéticas. O Spring Boot Security, uma extensão do Spring Security, foi utilizado para
-proteger aplicativos baseados em Spring Boot. A criptografia de senha foi implementada para armazenar as senhas de forma
-segura no banco de dados, garantindo que não possam ser lidas por usuários não autorizados.
 
 O Hibernate é amplamente utilizado no desenvolvimento Java devido às suas vantagens significativas. Ele simplifica o
 acesso a dados, abstraindo o mapeamento objeto-relacional e automatizando tarefas comuns, aumentando a produtividade dos
@@ -173,27 +160,32 @@ Essa abordagem eficiente permite verificar se os dados inseridos atendem a padr�
 CPF, entre outros. O uso do @Validator com expressões regulares ajuda a manter a consistência dos
 dados e reduzir erros ou entradas inválidas, oferecendo uma forma poderosa e flexível de validação de dados no projeto.
 
-Para garantir a persistência de dados, foi implementada uma instância do PostgreSQL em um contêiner Docker,
+Para garantir a persistência de dados, foi implementada uma instância do MySQL (SQL) e REDIS (NoSQL) em um contêiner Docker,
 proporcionando isolamento eficiente de responsabilidades, portabilidade, escalabilidade, facilidade de backup e
-segurança, otimizando o desenvolvimento e a manutenção da aplicação.
+segurança, otimizando o desenvolvimento e a manutenção da aplicação. A arquitetura proposta com os dois banco de dados tem o intuito
+de suportar grandes volumes de requisições em um pequeno espaço de tempo. O banco REDIS (em memória) recebe as requsições da aplicação
+acumulando-as por um período de tempo (ganho de velocidade na comunicação). Neste delta de tempo ocorre a migração dos dados para MySQL 
+e a limpeza automática dos mesmos no REDIS. Essa estratégia visa ganho de performace já que o banco REDIS utiliza chave e valor para 
+comunicação e a persistência final no MySQL. Além disso as tabelas SQL tem colunas estratégicas indexadas para o ganho de performance 
+em consultas.
 
-Para garantir a segurança das APIs, adotamos o uso do JWT (JSON Web Token) como um mecanismo de geração de tokens. Isso
-assegura autenticação única por usuário, com informações criptografadas no token, o que restringe o acesso somente a
-usuários previamente registrados, tornando o sistema mais robusto contra ameaças de autenticação não autorizada.
+Uma arquitetura básica na AWS para a aplicação desenvolvida pode ser desenhada da seguinte forma:
+Um contêiner Docker que persiste dados no Redis e replica para o MySQL inclui 
+instâncias Amazon EC2 para a aplicação, Amazon ElastiCache para o Redis (opcional), Amazon RDS para o MySQL, um Application Load Balancer (ALB) para 
+distribuição de tráfego, Amazon VPC para isolamento e segurança, CloudWatch para monitoramento. 
+Isso proporcionaria escalabilidade e alta disponibilidade.
 
-Os relacionamentos definidos para esta API foram:
-
-![img.png](watchwatt/src/main/resources/images/imgRelationships.png)
 
 ## Desafios
 
-- Definir e compreender os relacionamentos entre usuários, eletrodomésticos e seus endereços.
+- Definir e compreender os relacionamentos entre usuários, veículos, métodos de pagamento e vagas.
 - Incluir as regras de validações bem como seus regexs.
 - Tratamento de exceções para possíveis erros durante o consumo das APIs.
 - Definição da arquitetura do projeto (DDD/MVC/tecnologias e outros).
 - Determinação das responsabilidades dos membros da equipe.
 - Subir o bando de dados em container Docker.
-- Realizar autenticação via JWT.
+- Integração entre as bases SQL e NoSQL.
+- Utilização do WebFlux.
 
 ## Documentação Técnica
 
@@ -201,18 +193,5 @@ Os relacionamentos definidos para esta API foram:
 
 ### Disclaimer
 
-Documentação via SwaggerUI: [Link](http://localhost:8080/api/watchwatt/swagger-ui/index.html#)
+Postman Collection: [Collection](src/main/resources/doc/parkeer.postman_collection.json)
 
-Postman Collection: [Collection](watchwatt/src/main/resources/docs/Watch Watt.postman_collection.json)
-
-![img.png](watchwatt/src/main/resources/images/imgSwagger.png)
-
-Para a propriedade ``gender`` os valores possíveis são: ``MALE``, ``FEMALE`` ou ``OTHERS``.
-
-Para a propriedade ``degree_kinship`` os valores possíveis
-são: ``FATHER``, ``MOTHER``, ``SON``, ``DAUGHTER``, ``SISTER``, ``BROTHER``,
-``HUSBAND``, ``WIFE`` ou ``OTHERS``.
-
-Para as requisições que retornam uma lista com todos os itens é possível parametrizar as propriedades ``limit`` (número
-de
-limite retornados na consulta) e ``offset`` (qual página de registros a serem retornados) nos parâmetros da requisição.

@@ -18,7 +18,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @EqualsAndHashCode
 @Table(name = "tb_receipt")
@@ -46,5 +45,19 @@ public class Receipt {
         this.duration = duration;
         this.minuteRate = minuteRate;
         this.total = total;
+    }
+
+    @Override
+    public String toString() {
+        return "Receipt{" +
+                "userId=" + userId +
+                ", plate='" + plate + '\'' +
+                ", time=" + time +
+                ", creationDate=" + creationDate +
+                ", lastUpdate=" + lastUpdate +
+                ", duration=" + duration +
+                ", minuteRate=" + minuteRate +
+                ", total=" + total +
+                '}';
     }
 }
