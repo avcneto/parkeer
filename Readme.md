@@ -197,4 +197,4 @@ Postman Collection: [Collection](src/main/resources/doc/parkeer.postman_collecti
 
 Postman Documentation: [Documentation](https://documenter.getpostman.com/view/15043957/2s9YXiYM3B)
 
-![](https://i.imgur.com/dc65M5l.png)
+![](https://i.imgur.com/9D2uDkh.png)
