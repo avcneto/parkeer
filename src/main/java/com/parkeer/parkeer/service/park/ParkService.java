@@ -6,11 +6,14 @@ import com.parkeer.parkeer.entity.park.Park;
 import com.parkeer.parkeer.entity.park.ParkRedis;
 import com.parkeer.parkeer.entity.park.Status;
 import com.parkeer.parkeer.entity.park.Time;
+import com.parkeer.parkeer.entity.payment_method.PaymentMethodType;
+import com.parkeer.parkeer.entity.receipt.Receipt;
 import com.parkeer.parkeer.exception.BadRequestException;
 import com.parkeer.parkeer.exception.NotFoundException;
 import com.parkeer.parkeer.repository.park.ParkRedisRepositoryImpl;
 import com.parkeer.parkeer.repository.park.ParkRepository;
 import com.parkeer.parkeer.repository.payment_method.PaymentMethodRepository;
+import com.parkeer.parkeer.repository.receipt.ReceiptRepository;
 import com.parkeer.parkeer.util.QueryParams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,11 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
+import static com.parkeer.parkeer.config.SchedulingConfig.PRICE_POR_MINUTE_PARKED;
+import static com.parkeer.parkeer.util.Producer.producerMessageConsole;
+import static com.parkeer.parkeer.util.Validators.getDuration;
+import static com.parkeer.parkeer.util.Validators.getPriceTotalByMinute;
+
 @Slf4j
 @Service
 public class ParkService {
@@ -27,16 +35,20 @@ public class ParkService {
     private static final String VEHICLE_IS_PARKED = "vehicle is parked, please unpark the vehicle and try again";
     private static final String VEHICLE_UNREGISTERED = "unregistered vehicle";
     private static final String VEHICLE_IS_NOT_PARKED = "vehicle is not parked";
+    private static final String YOUR_TICKET_IS_ALREADY = "Your ticket is already: %s";
     private static final String UNREGISTERED_PAYMENT_METHOD = "unregistered payment method";
     private static final String NOT_SEND_QUERY_PARAM = "plate or status not sent as query param";
+    private static final String METHOD_NOT_ALLOWED = "payment method not allowed to this period of time";
     private static final Integer ZERO = 0;
     private static final Integer ONE = 1;
 
+    private final ReceiptRepository receiptRepository;
     private final PaymentMethodRepository paymentMethodRepository;
     private final ParkRedisRepositoryImpl parkRedisRepository;
     private final ParkRepository parkRepository;
 
-    public ParkService(PaymentMethodRepository paymentMethodRepository, ParkRedisRepositoryImpl parkRedisRepository, ParkRepository parkRepository) {
+    public ParkService(ReceiptRepository receiptRepository, PaymentMethodRepository paymentMethodRepository, ParkRedisRepositoryImpl parkRedisRepository, ParkRepository parkRepository) {
+        this.receiptRepository = receiptRepository;
         this.paymentMethodRepository = paymentMethodRepository;
         this.parkRedisRepository = parkRedisRepository;
         this.parkRepository = parkRepository;
@@ -49,7 +61,13 @@ public class ParkService {
                         return Mono.error(new BadRequestException(VEHICLE_IS_PARKED));
                     } else {
                         return paymentMethodRepository.findByUserId(park.getUserId())
-                                .flatMap(paymentMethod -> saveParkRedis(parkDTO, park.getVersion()))
+                                .flatMap(paymentMethod -> {
+                                    if (PaymentMethodType.PIX.equals(paymentMethod.getPaymentMethodType()) && Time.INDETERMINATE.equals(park.getTime())) {
+                                        return Mono.error(new BadRequestException(METHOD_NOT_ALLOWED));
+                                    }
+
+                                    return saveParkRedis(parkDTO, park.getVersion());
+                                })
                                 .switchIfEmpty(Mono.error(new BadRequestException(UNREGISTERED_PAYMENT_METHOD)));
                     }
                 })
@@ -71,7 +89,13 @@ public class ParkService {
                                     }
 
                                     return paymentMethodRepository.findByUserId(parkDTO.userId())
-                                            .flatMap(paymentMethod -> saveParkRedis(parkDTO, ZERO))
+                                            .flatMap(paymentMethod -> {
+                                                if (PaymentMethodType.PIX.equals(paymentMethod.getPaymentMethodType()) && Time.INDETERMINATE.equals(parkDTO.time())) {
+                                                    return Mono.error(new BadRequestException(METHOD_NOT_ALLOWED));
+                                                }
+
+                                                return saveParkRedis(parkDTO, ZERO);
+                                            })
                                             .switchIfEmpty(Mono.error(new BadRequestException(UNREGISTERED_PAYMENT_METHOD)));
                                 })
                 )
@@ -95,11 +119,11 @@ public class ParkService {
 
     private LocalDateTime getLastUpdate(Time time, LocalDateTime now) {
         return switch (time) {
-            case FIFTY_SECOND -> now.plusSeconds(50);
+            case ONE_MINUTE -> now.plusMinutes(1);
             case FIFTEEN -> now.plusMinutes(15);
             case THIRTY -> now.plusMinutes(30);
             case SIXTY -> now.plusHours(1);
-            default -> now.plusHours(2);
+            default -> now.plusDays(31);
         };
     }
 
@@ -114,9 +138,26 @@ public class ParkService {
                                 it.setVersion(it.getVersion() + ONE);
 
                                 return parkRepository.save(new Park(it))
-                                        .flatMap(savedPark -> parkRedisRepository
-                                                .delete(savedPark.getPlate())
-                                                .thenReturn(savedPark))
+                                        .flatMap(savedPark -> {
+                                            var duration = getDuration(savedPark.getCreationDate(), savedPark.getLastUpdate());
+                                            var receipt = new Receipt(
+                                                    savedPark.getUserId(),
+                                                    savedPark.getPlate(),
+                                                    savedPark.getTime(),
+                                                    savedPark.getCreationDate(),
+                                                    savedPark.getLastUpdate(),
+                                                    duration,
+                                                    PRICE_POR_MINUTE_PARKED,
+                                                    getPriceTotalByMinute(duration)
+                                            );
+
+                                            producerMessageConsole(receipt, YOUR_TICKET_IS_ALREADY);
+
+                                            return parkRedisRepository
+                                                    .delete(savedPark.getPlate())
+                                                    .then(receiptRepository.save(receipt))
+                                                    .thenReturn(savedPark);
+                                        })
                                         .map(ParkRedis::new);
                             }
                         })
@@ -128,7 +169,23 @@ public class ParkService {
                                             it2.setVersion(it2.getVersion() + ONE);
                                             it2.setStatus(Status.END);
 
-                                            return parkRepository.save(it2);
+                                            var duration = getDuration(it2.getCreationDate(), it2.getLastUpdate());
+                                            var receipt = new Receipt(
+                                                    it2.getUserId(),
+                                                    it2.getPlate(),
+                                                    it2.getTime(),
+                                                    it2.getCreationDate(),
+                                                    it2.getLastUpdate(),
+                                                    duration,
+                                                    PRICE_POR_MINUTE_PARKED,
+                                                    getPriceTotalByMinute(duration)
+                                            );
+
+                                            producerMessageConsole(receipt, YOUR_TICKET_IS_ALREADY);
+
+                                            return parkRepository.save(it2)
+                                                    .flatMap(it -> receiptRepository.save(receipt)
+                                                            .thenReturn(it));
                                         })
                                         .map(ParkRedis::new)
                         )

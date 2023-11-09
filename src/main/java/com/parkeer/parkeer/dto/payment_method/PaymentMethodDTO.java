@@ -15,4 +15,6 @@ public record PaymentMethodDTO(
         String cardFlag
 ) {
     private static final String FIELD_CANNOT_BE_NULL_EMPTY_BLANK_MESSAGE = "Field cannot be null, empty or blank";
+
+
 }

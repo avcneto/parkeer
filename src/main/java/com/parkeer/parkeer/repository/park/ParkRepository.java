@@ -7,7 +7,6 @@ import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.data.repository.query.Param;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 public interface ParkRepository extends R2dbcRepository<Park, Long> {
 
@@ -18,7 +17,7 @@ public interface ParkRepository extends R2dbcRepository<Park, Long> {
                 park.id AS park_id,
                 park.status AS park_status,
                 park.version AS park_version
-                
+                                
             FROM tb_vehicle AS vehicle
             LEFT JOIN tb_park AS park on park.plate = vehicle.plate
             WHERE vehicle.plate = :plate;

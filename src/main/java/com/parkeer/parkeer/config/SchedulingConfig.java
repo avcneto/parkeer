@@ -18,7 +18,11 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import static com.parkeer.parkeer.util.Producer.producerMessageConsole;
+import static com.parkeer.parkeer.util.Validators.getDuration;
+import static com.parkeer.parkeer.util.Validators.getPriceTotalByMinute;
 import static com.parkeer.parkeer.util.Validators.hasTimeExpired;
+import static com.parkeer.parkeer.util.Validators.isNearTimeExpired;
 import static java.lang.String.format;
 
 @Slf4j
@@ -26,16 +30,18 @@ import static java.lang.String.format;
 @EnableScheduling
 public class SchedulingConfig {
 
+    public static final BigDecimal PRICE_POR_MINUTE_PARKED = new BigDecimal("0.16");
     private static final String REDIS_SYNCHRONIZATION_EMPTY_MESSAGE = "redis empty, synchronization not performed.";
     private static final String SUCCESSFUL_SYNCHRONIZATION = "successful synchronization";
     private static final String SUCCESSFUL_OPERATION_FOR_PARK_REDIS = "successful operation for ParkRedis";
     private static final String SUCCESSFUL_OPERATION_FOR_PARK = "successful operation for Park";
     private static final String ERROR_DURING_SYNCHRONIZATION = "error during synchronization: %s";
     private static final String TOPIC_MESSAGE = "TOPIC_PUBLISH: %s";
+    private static final String TOPIC_EXPIRED_MESSAGE = "You have 5 minutes left before your time to expired, park: %s ";
     private static final Integer ONE = 1;
-    private static final BigDecimal PRICE_POR_MINUTE_PARKED = new BigDecimal("0.16");
     private static final long SYNCHRONIZATION_DATABASE_TIME = 50000;
     private static final long SYNCHRONIZATION_STATUS_TIME = 10000;
+    private static final long WARNING_MESSAGE_TIME = 500000;
 
     private final ReceiptRepository receiptRepository;
     private final ParkRedisRepositoryImpl parkRedisRepository;
@@ -46,6 +52,30 @@ public class SchedulingConfig {
         this.parkRedisRepository = parkRedisRepository;
         this.parkRepository = parkRepository;
     }
+
+    @Scheduled(fixedDelay = WARNING_MESSAGE_TIME)
+    private void warningMessage() {
+        parkRedisRepository.findByStatus(Status.START)
+                .flatMap(parkRedis -> {
+                    var now = LocalDateTime.now();
+                    if (isNearTimeExpired(now, LocalDateTime.parse(parkRedis.getLastUpdate()))) {
+                        producerMessageConsole(parkRedis, TOPIC_EXPIRED_MESSAGE);
+                    }
+
+                    return Mono.empty();
+                }).subscribe();
+
+        parkRepository.findByStatus(Status.START)
+                .flatMap(parkMysql -> {
+                    var now = LocalDateTime.now();
+                    if (isNearTimeExpired(now, parkMysql.getLastUpdate())) {
+                        producerMessageConsole(parkMysql, TOPIC_EXPIRED_MESSAGE);
+                    }
+
+                    return Mono.empty();
+                }).subscribe();
+    }
+
 
     @Scheduled(fixedDelay = SYNCHRONIZATION_STATUS_TIME)
     private void synchronizeStatus() {
@@ -81,7 +111,7 @@ public class SchedulingConfig {
                                                     getPriceTotalByMinute(duration)
                                             );
 
-                                            producerMessageConsole(receipt);
+                                            producerMessageConsole(receipt, TOPIC_MESSAGE);
 
                                             return receiptRepository.save(receipt);
                                         })
@@ -96,17 +126,6 @@ public class SchedulingConfig {
                 .subscribe();
     }
 
-    private <T> void producerMessageConsole(T message) {
-        log.info(format(TOPIC_MESSAGE, message));
-    }
-
-    private BigDecimal getPriceTotalByMinute(Integer duration) {
-        return PRICE_POR_MINUTE_PARKED.multiply(new BigDecimal(duration));
-    }
-
-    private Integer getDuration(LocalDateTime creationDate, LocalDateTime lastUpdate) {
-        return (int) Duration.between(creationDate, lastUpdate).toMinutes();
-    }
 
     private void updateParkStatusByMysql(LocalDateTime now) {
         parkRepository.findByStatus(Status.START)
@@ -129,7 +148,7 @@ public class SchedulingConfig {
                                             getPriceTotalByMinute(duration)
                                     );
 
-                                    producerMessageConsole(receipt);
+                                    producerMessageConsole(receipt, TOPIC_MESSAGE);
 
                                     return receiptRepository.save(receipt);
                                 });
