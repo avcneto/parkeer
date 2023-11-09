@@ -195,3 +195,6 @@ Isso proporcionaria escalabilidade e alta disponibilidade.
 
 Postman Collection: [Collection](src/main/resources/doc/parkeer.postman_collection.json)
 
+Postman Documentation: [Documentation](https://documenter.getpostman.com/view/15043957/2s9YXiYM3B)
+
+![](https://i.imgur.com/dc65M5l.png)

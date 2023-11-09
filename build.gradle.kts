@@ -46,6 +46,8 @@ dependencies {
     implementation("org.springframework.security:spring-security-crypto:6.1.5")
     implementation("org.hibernate:hibernate-core:6.4.0.CR1")
     implementation("org.hibernate:hibernate-java8:5.0.3.Final")
+    implementation("org.hibernate:hibernate-validator:8.0.0.Final")
+
 }
 
 tasks.withType<Test> {
