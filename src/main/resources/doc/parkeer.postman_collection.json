@@ -36,7 +36,66 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Create user",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Homer Simpson\",\r\n    \"address\": \"Evergreen Terrace, Springfield\",\r\n    \"addressNumber\": \"233\",\r\n    \"zipCode\": \"00000-000\",\r\n    \"phone\": \"5554435654\",\r\n    \"cpf\": \"83570418090\",\r\n    \"email\": \"homer.simpson@dexampl3.com\",\r\n    \"password\": \"123456abc\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/parkeer/user",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"user"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Location",
+									"value": "/user/1"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "196"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:06:22 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"name\": \"Homer Simpson\",\n    \"address\": \"Evergreen Terrace, Springfield\",\n    \"addressNumber\": \"233\",\n    \"zipCode\": \"00000-000\",\n    \"phone\": \"5554435654\",\n    \"cpf\": \"83570418090\",\n    \"email\": \"homer.simpson@dexampl3.com\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Update User",
@@ -70,7 +129,68 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Update User",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Homer Simpson atualizado\",\r\n    \"address\": \"Evergreen Terrace, Springfield atualizado\",\r\n    \"addressNumber\": \"234\",\r\n    \"zipCode\": \"00000-000\",\r\n    \"phone\": \"5551234567\",\r\n    \"cpf\": \"83570418090\",\r\n    \"email\": \"homer.simpson@example.com\",\r\n    \"password\": \"123456abdc\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/parkeer/user?id=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"user"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "217"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:06:28 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"name\": \"Homer Simpson atualizado\",\n    \"address\": \"Evergreen Terrace, Springfield atualizado\",\n    \"addressNumber\": \"234\",\n    \"zipCode\": \"00000-000\",\n    \"phone\": \"5551234567\",\n    \"cpf\": \"83570418090\",\n    \"email\": \"homer.simpson@example.com\"\n}"
+						}
+					]
 				},
 				{
 					"name": "find by cpf, email or id",
@@ -118,7 +238,79 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "find by cpf, email or id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Homer Simpson\",\r\n    \"address\": \"742 Evergreen Terrace, Springfield\",\r\n    \"addressNumber\": \"Apt 2B\",\r\n    \"zipCode\": \"00000-000\",\r\n    \"phone\": \"555-123-4567\",\r\n    \"cpf\": \"123.456.789-01\",\r\n    \"email\": \"homer.simpson@example.com\",\r\n    \"password\": \"doh!\"\r\n}\r\n\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/parkeer/user/search?id=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"user",
+										"search"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "homer.simpson@example.com",
+											"disabled": true
+										},
+										{
+											"key": "id",
+											"value": "1"
+										},
+										{
+											"key": "cpf",
+											"value": "83570418090",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "217"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:06:34 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"name\": \"Homer Simpson atualizado\",\n    \"address\": \"Evergreen Terrace, Springfield atualizado\",\n    \"addressNumber\": \"234\",\n    \"zipCode\": \"00000-000\",\n    \"phone\": \"5551234567\",\n    \"cpf\": \"83570418090\",\n    \"email\": \"homer.simpson@example.com\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Delete by id",
@@ -143,7 +335,51 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Delete by id",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/parkeer/user?id=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"user"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:08:22 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				}
 			]
 		},
@@ -176,7 +412,166 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "park",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": 1,\r\n\t\"plate\": \"ABC-12345\",\r\n\t\"time\": \"THIRTY\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/parkeer/park",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"park"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "141"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:06:40 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"timestamp\": 1699499200172,\n    \"path\": \"/parkeer/park\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"message\": \"unregistered vehicle\",\n    \"requestId\": \"29ceabf4\"\n}"
+						},
+						{
+							"name": "park",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": 1,\r\n\t\"plate\": \"ABC-12345\",\r\n\t\"time\": \"THIRTY\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/parkeer/park",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"park"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "148"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:06:52 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"timestamp\": 1699499212792,\n    \"path\": \"/parkeer/park\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"message\": \"unregistered payment method\",\n    \"requestId\": \"1ef5d626\"\n}"
+						},
+						{
+							"name": "park",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": 1,\r\n\t\"plate\": \"ABC-12345\",\r\n\t\"time\": \"THIRTY\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/parkeer/park",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"park"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Location",
+									"value": "/park/ABC-12345"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "169"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:07:08 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"userId\": 1,\n    \"version\": 0,\n    \"time\": \"THIRTY\",\n    \"status\": \"START\",\n    \"creationDate\": \"2023-11-09T00:07:08.480221900\",\n    \"lastUpdate\": \"2023-11-09T00:37:08.480221900\",\n    \"plate\": \"ABC-12345\"\n}"
+						}
+					]
 				},
 				{
 					"name": "unpark",
@@ -204,7 +599,62 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "unpark",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"plate\": \"ABC-12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/parkeer/unpark",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"unpark"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "169"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:07:51 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"userId\": 1,\n        \"version\": 1,\n        \"time\": \"THIRTY\",\n        \"status\": \"END\",\n        \"creationDate\": \"2023-11-09T00:07:08.480221900\",\n        \"lastUpdate\": \"2023-11-09T00:37:08.480221900\",\n        \"plate\": \"ABC-12345\"\n    }\n]"
+						}
+					]
 				},
 				{
 					"name": "get park by plate or status",
@@ -234,7 +684,64 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "get park by plate or status",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/parkeer/park/search?plate=ABC-12345&status=END",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"park",
+										"search"
+									],
+									"query": [
+										{
+											"key": "plate",
+											"value": "ABC-12345"
+										},
+										{
+											"key": "status",
+											"value": "END"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "149"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:07:57 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"userId\": 1,\n        \"version\": 1,\n        \"time\": \"THIRTY\",\n        \"status\": \"END\",\n        \"creationDate\": \"2023-11-09T00:07:08\",\n        \"lastUpdate\": \"2023-11-09T00:37:08\",\n        \"plate\": \"ABC-12345\"\n    }\n]"
+						}
+					]
 				}
 			]
 		},
@@ -267,7 +774,66 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "add vehicle",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": 1,\r\n    \"plate\": \"ABC-12345\",\r\n    \"branch\": \"Toyota\",\r\n    \"model\": \"Corolla\",\r\n    \"year\": 2022,\r\n    \"type\": \"CAR\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/parkeer/vehicle",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"vehicle"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Location",
+									"value": "/vehicle/1"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "100"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:06:47 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"userId\": 1,\n    \"plate\": \"ABC-12345\",\n    \"branch\": \"Toyota\",\n    \"model\": \"Corolla\",\n    \"year\": 2022,\n    \"type\": \"CAR\"\n}"
+						}
+					]
 				},
 				{
 					"name": "update vehicle by id",
@@ -301,7 +867,68 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "update vehicle by id",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": 1,\r\n    \"plate\": \"ABC-12345\",\r\n    \"branch\": \"Hyundai\",\r\n    \"model\": \"HB20\",\r\n    \"year\": 2019,\r\n    \"type\": \"CAR\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/parkeer/vehicle?id=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"vehicle"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "98"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:07:42 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"userId\": 1,\n    \"plate\": \"ABC-12345\",\n    \"branch\": \"Hyundai\",\n    \"model\": \"HB20\",\n    \"year\": 2019,\n    \"type\": \"CAR\"\n}"
+						}
+					]
 				},
 				{
 					"name": "get vehicle by id, userId and plate",
@@ -349,7 +976,79 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "get vehicle by id, userId and plate",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\": 123456,\r\n    \"plate\": \"ABC1234\",\r\n    \"branch\": \"Toyota\",\r\n    \"model\": \"Corolla\",\r\n    \"year\": 2022,\r\n    \"type\": \"CAR\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/parkeer/vehicle/search?userId=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"vehicle",
+										"search"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "1"
+										},
+										{
+											"key": "plate",
+											"value": "ABC-12345",
+											"disabled": true
+										},
+										{
+											"key": "id",
+											"value": "1",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "100"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:07:46 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"userId\": 1,\n        \"plate\": \"ABC-12345\",\n        \"branch\": \"Hyundai\",\n        \"model\": \"HB20\",\n        \"year\": 2019,\n        \"type\": \"CAR\"\n    }\n]"
+						}
+					]
 				},
 				{
 					"name": "delete vehicle by id",
@@ -374,7 +1073,51 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "delete vehicle by id",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/parkeer/vehicle?id=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"vehicle"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:08:17 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				}
 			]
 		},
@@ -408,7 +1151,67 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "create payment method",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n         \"userId\": 1,\r\n         \"paymentMethodType\": \"PIX\",\r\n         \"pixKey\": \"1234\",\r\n         \"cardNumber\": \"1234****5678\",\r\n         \"cardFlag\": \"mastercard\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/parkeer/payment/method",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"payment",
+										"method"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Location",
+									"value": "/payment/method/1"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "113"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:06:58 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"userId\": 1,\n    \"paymentMethodType\": \"PIX\",\n    \"pixKey\": \"1234\",\n    \"cardNumber\": \"1234****5678\",\n    \"cardFlag\": \"mastercard\"\n}"
+						}
+					]
 				},
 				{
 					"name": "update payment method",
@@ -425,7 +1228,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/parkeer/payment/method?id=3",
+							"raw": "localhost:8080/parkeer/payment/method?id=1",
 							"host": [
 								"localhost"
 							],
@@ -438,12 +1241,131 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "3"
+									"value": "1"
 								}
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "update payment method",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n         \"userId\": 1,\r\n         \"paymentMethodType\": \"CREDIT_CARD\",\r\n         \"pixKey\": \"1234\",\r\n         \"cardNumber\": \"1234****5678\",\r\n         \"cardFlag\": \"mastercard\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/parkeer/payment/method?id=3",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"payment",
+										"method"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:07:04 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "update payment method",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n         \"userId\": 1,\r\n         \"paymentMethodType\": \"CREDIT_CARD\",\r\n         \"pixKey\": \"1234\",\r\n         \"cardNumber\": \"1234****5678\",\r\n         \"cardFlag\": \"mastercard\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/parkeer/payment/method?id=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"payment",
+										"method"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "121"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:10:10 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"userId\": 1,\n    \"paymentMethodType\": \"CREDIT_CARD\",\n    \"pixKey\": \"1234\",\n    \"cardNumber\": \"1234****5678\",\n    \"cardFlag\": \"mastercard\"\n}"
+						}
+					]
 				},
 				{
 					"name": "delete payment method by id",
@@ -469,7 +1391,52 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "delete payment method by id",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/parkeer/payment/method?id=2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"payment",
+										"method"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:08:13 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "get payment method by id or all",
@@ -477,7 +1444,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/parkeer/payment/method?id=3",
+							"raw": "localhost:8080/parkeer/payment/method?id=1",
 							"host": [
 								"localhost"
 							],
@@ -490,12 +1457,65 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "3"
+									"value": "1"
 								}
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "get payment method by id or all",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/parkeer/payment/method?id=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"payment",
+										"method"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "115"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:07:22 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"userId\": 1,\n        \"paymentMethodType\": \"PIX\",\n        \"pixKey\": \"1234\",\n        \"cardNumber\": \"1234****5678\",\n        \"cardFlag\": \"mastercard\"\n    }\n]"
+						}
+					]
 				}
 			]
 		},
@@ -530,7 +1550,64 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "get receipt by userId or plate",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/parkeer/receipt?userId=1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"parkeer",
+										"receipt"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "1"
+										},
+										{
+											"key": "plate",
+											"value": "ABC-12345",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "174"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 09 Nov 2023 03:08:02 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"userId\": 1,\n        \"plate\": \"ABC-12345\",\n        \"time\": \"THIRTY\",\n        \"creationDate\": \"2023-11-09T00:07:08\",\n        \"lastUpdate\": \"2023-11-09T00:37:08\",\n        \"duration\": 30,\n        \"minuteRate\": 0.16,\n        \"total\": 4.8\n    }\n]"
+						}
+					]
 				}
 			]
 		},
@@ -551,7 +1628,53 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "ping",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/parkeer/ping",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"parkeer",
+								"ping"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "4"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 09 Nov 2023 03:08:07 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "pong"
+				}
+			]
 		}
 	]
 }
