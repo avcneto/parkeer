@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Pattern;
 import java.util.Optional;
 
 public record UserPlateDTO(
-        @NotBlank(message = FIELD_CANNOT_BE_NULL_EMPTY_BLANK_MESSAGE)
         Long userId,
         @NotBlank(message = FIELD_CANNOT_BE_NULL_EMPTY_BLANK_MESSAGE)
         @Pattern(regexp = PLATE_REGEX, message = PLATE_INVALID_MESSAGE)

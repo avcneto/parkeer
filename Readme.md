@@ -1,7 +1,7 @@
 ![](https://i.imgur.com/TEiYgBt.png)  
 ![Licença](https://img.shields.io/badge/license-MIT-green)
 ![Badge em Desenvolvimento](https://img.shields.io/badge/release%20date-november/08-yellow)
-![Gradle Version](https://img.shields.io/badge/gradle-x.x.x-blue)
+![Gradle Version](https://img.shields.io/badge/gradle-8.4.0-blue)
 ![Java Version](https://img.shields.io/badge/java-17-blue)
 
 # <h1 align="center">Parkeer</h1>

@@ -12,11 +12,11 @@ services:
       MYSQL_DATABASE: parkeer
       MYSQL_USER: fiap
       MYSQL_PASSWORD: fiap
-    deploy:
-      resources:
-        limits:
-          cpus: '4'
-          memory: '2g'
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '4'
+#          memory: '2g'
 
   redis:
     container_name: redis
@@ -27,8 +27,8 @@ services:
       REDIS_PASSWORD: fiap
     ports:
       - "6379:6379"
-    deploy:
-      resources:
-        limits:
-          cpus: '4'
-          memory: '2g'
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '4'
+#          memory: '2g'
