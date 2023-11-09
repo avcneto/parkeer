@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Homer Simpson\",\r\n    \"address\": \"Evergreen Terrace, Springfield\",\r\n    \"addressNumber\": \"233\",\r\n    \"zipCode\": \"00000-000\",\r\n    \"phone\": \"5554435654\",\r\n    \"cpf\": \"123.456.789-03\",\r\n    \"email\": \"homer.simpson@dexampl3.com\",\r\n    \"password\": \"123456!abc\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Homer Simpson\",\r\n    \"address\": \"Evergreen Terrace, Springfield\",\r\n    \"addressNumber\": \"233\",\r\n    \"zipCode\": \"00000-000\",\r\n    \"phone\": \"5554435654\",\r\n    \"cpf\": \"83570418090\",\r\n    \"email\": \"homer.simpson@dexampl3.com\",\r\n    \"password\": \"123456abc\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Homer Simpson atualizado\",\r\n    \"address\": \"Evergreen Terrace, Springfield atualizado\",\r\n    \"addressNumber\": \"234\",\r\n    \"zipCode\": \"00000-000\",\r\n    \"phone\": \"5551234567\",\r\n    \"cpf\": \"123.456.789-01\",\r\n    \"email\": \"homer.simpson@example.com\",\r\n    \"password\": \"123456!abdc\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Homer Simpson atualizado\",\r\n    \"address\": \"Evergreen Terrace, Springfield atualizado\",\r\n    \"addressNumber\": \"234\",\r\n    \"zipCode\": \"00000-000\",\r\n    \"phone\": \"5551234567\",\r\n    \"cpf\": \"83570418090\",\r\n    \"email\": \"homer.simpson@example.com\",\r\n    \"password\": \"123456abdc\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -112,7 +112,7 @@
 								},
 								{
 									"key": "cpf",
-									"value": "123.456.789-01",
+									"value": "83570418090",
 									"disabled": true
 								}
 							]
@@ -157,7 +157,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": 1,\r\n\t\"plate\": \"ABC-12345\",\r\n\t\"time\": \"FIFTY_SECOND\"\r\n}",
+							"raw": "{\r\n    \"userId\": 1,\r\n\t\"plate\": \"ABC-12345\",\r\n\t\"time\": \"THIRTY\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -284,7 +284,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/parkeer/vehicle?id=2",
+							"raw": "localhost:8080/parkeer/vehicle?id=1",
 							"host": [
 								"localhost"
 							],
@@ -296,7 +296,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "2"
+									"value": "1"
 								}
 							]
 						}
@@ -343,7 +343,7 @@
 								},
 								{
 									"key": "id",
-									"value": "2",
+									"value": "1",
 									"disabled": true
 								}
 							]
