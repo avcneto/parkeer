@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "9fb64321-f18e-46b7-9e9c-7e6afb623303",
-		"name": "parkeer",
+		"_postman_id": "ba307c8a-48c0-4c02-b3a1-6db821e82ac0",
+		"name": "Parkeer",
+		"description": "PostTech Alura & FIAP - Tech Challenge 03",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29499384"
+		"_exporter_id": "15043957"
 	},
 	"item": [
 		{
@@ -16,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Homer Simpson3\",\r\n    \"address\": \"742 Evergreen Terrace, Springfield\",\r\n    \"addressNumber\": \"Apt 2B\",\r\n    \"zipCode\": \"00000-000\",\r\n    \"phone\": \"555-443-5654\",\r\n    \"cpf\": \"123.456.789-03\",\r\n    \"email\": \"homer.simpson@dexampl3.com\",\r\n    \"password\": \"doh!\"\r\n}\r\n\r\n\r\n",
+							"raw": "{\r\n    \"name\": \"Homer Simpson\",\r\n    \"address\": \"Evergreen Terrace, Springfield\",\r\n    \"addressNumber\": \"233\",\r\n    \"zipCode\": \"00000-000\",\r\n    \"phone\": \"5554435654\",\r\n    \"cpf\": \"123.456.789-03\",\r\n    \"email\": \"homer.simpson@dexampl3.com\",\r\n    \"password\": \"123456!abc\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -44,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Homer Simpson atualizado\",\r\n    \"address\": \"742 Evergreen Terrace, Springfield atualizado\",\r\n    \"addressNumber\": \"Apt 2B\",\r\n    \"zipCode\": \"00000-000\",\r\n    \"phone\": \"555-123-4567\",\r\n    \"cpf\": \"123.456.789-01\",\r\n    \"email\": \"homer.simpson@example.com\",\r\n    \"password\": \"doh!\"\r\n}\r\n\r\n\r\n",
+							"raw": "{\r\n    \"name\": \"Homer Simpson atualizado\",\r\n    \"address\": \"Evergreen Terrace, Springfield atualizado\",\r\n    \"addressNumber\": \"234\",\r\n    \"zipCode\": \"00000-000\",\r\n    \"phone\": \"5551234567\",\r\n    \"cpf\": \"123.456.789-01\",\r\n    \"email\": \"homer.simpson@example.com\",\r\n    \"password\": \"123456!abdc\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -156,7 +157,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": 1,\r\n\t\"plate\": \"ABC123454444444467896\",\r\n\t\"time\": \"FIFTY_SECOND\"\r\n}",
+							"raw": "{\r\n    \"userId\": 1,\r\n\t\"plate\": \"ABC-12345\",\r\n\t\"time\": \"FIFTY_SECOND\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -184,7 +185,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"plate\": \"ABC123454444444467896\"\r\n}",
+							"raw": "{\r\n\t\"plate\": \"ABC-12345\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -211,7 +212,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/parkeer/park/search?plate=ABC123454444444467896&status=END",
+							"raw": "localhost:8080/parkeer/park/search?plate=ABC-12345&status=END",
 							"host": [
 								"localhost"
 							],
@@ -224,7 +225,7 @@
 							"query": [
 								{
 									"key": "plate",
-									"value": "ABC123454444444467896"
+									"value": "ABC-12345"
 								},
 								{
 									"key": "status",
@@ -247,7 +248,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": 1,\r\n    \"plate\": \"ABC123454444444467896\",\r\n    \"branch\": \"Toyota\",\r\n    \"model\": \"Corolla\",\r\n    \"year\": 2022,\r\n    \"type\": \"CAR\"\r\n}",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"plate\": \"ABC-12345\",\r\n    \"branch\": \"Toyota\",\r\n    \"model\": \"Corolla\",\r\n    \"year\": 2022,\r\n    \"type\": \"CAR\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -275,7 +276,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": 1,\r\n    \"plate\": \"ABC123454444444467896\",\r\n    \"branch\": \"Hyundai\",\r\n    \"model\": \"HB20\",\r\n    \"year\": 2019,\r\n    \"type\": \"CAR\"\r\n}",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"plate\": \"ABC-12345\",\r\n    \"branch\": \"Hyundai\",\r\n    \"model\": \"HB20\",\r\n    \"year\": 2019,\r\n    \"type\": \"CAR\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -337,7 +338,7 @@
 								},
 								{
 									"key": "plate",
-									"value": "ABC123454444444467896",
+									"value": "ABC-12345",
 									"disabled": true
 								},
 								{
@@ -523,7 +524,7 @@
 								},
 								{
 									"key": "plate",
-									"value": "ABC123454444444467896",
+									"value": "ABC-12345",
 									"disabled": true
 								}
 							]
